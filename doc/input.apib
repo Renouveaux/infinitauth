@@ -1,0 +1,93 @@
+FORMAT: 1A
+HOST: http://api.renouveaux.lan
+
+# InfinitAuth
+A REST Auth API Provider
+
+## SetUp the App
+The app was configured by environnement variable. This is the list you need.
+
+* SECRET *A secret passphrase, used to create Token*
+* MONGO_ADDR *Address of Mongo Database*
+* MONGO_PORT *Port of Mongo Database*
+* MONGO_DATABASE *The name of the database who the app store data*
+* port *Port number for listening, default set to 3000*
+
+To create these variable, you have to run on your console, for example on linux:
+
+```bash
+export MONGO_ADDR=localhost
+```
+
+
+
+
+# Group Auth
+Authenticate a user and return him token
+
+## Auth [/auth]
+
+### Get auth [GET]
+Return connexion information about the user:
+
+```no-highlight
+https://api.mywebsite.com/auth
+```
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "username" : "Awkwas",
+                "firstname" : "Gerda",
+                "lastname" : "Fairbairn",
+                "email" : "GerdaFairbairn@armyspy.com",
+                "createdAt": "2016-10-15T20:14:52.148Z",
+                "modifiedAt": "2016-10-18T22:13:34.518Z",
+                "emailVerified": "true",
+                "loginAttempts": "0"
+            }
+            
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "status": 401,
+                "code": 401,
+                "message": "Authentication required.",
+                "developerMessage": "Authentication with a valid API Key is required."
+            }
+
+### Authenticate a user [POST]
+Verify existing user, matching password and give him a token
+
++ Request with body (application/json)
+
+    + Body
+
+            {
+                "username": "Awkwas",
+                "password": "MySup3rCryptedP@ss0rd"
+            }
+
++ Response 201
+
+    + Body 
+
+            {
+                "success" : true,
+                "message" : "Authentification complete",
+                "token" : "Token Value"
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "success": false,
+                "message": "Authentication failed. Username and password do not match."
+            }
+
