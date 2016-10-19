@@ -1,7 +1,7 @@
 pages:
   script:
   - mkdir .public
-  - cp -r index.html .public
+  - cp -r doc/index.html .public
   - mv .public public
   artifacts:
     paths:
