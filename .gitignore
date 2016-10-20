@@ -3,3 +3,4 @@ infinitauth.sublime-project
 infinitauth.sublime-workspace
 yarn.lock
 node_modules
+doc/index.html

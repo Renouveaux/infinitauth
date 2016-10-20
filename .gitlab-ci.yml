@@ -1,6 +1,9 @@
+image: aglio
+
 pages:
   script:
   - mkdir .public
+  - docker run --rm -v $($pwd):/tmp -t aglio -i /tmp/doc/index.apib -o /tmp/doc/index.html
   - cp -r doc/index.html .public
   - mv .public public
   artifacts:

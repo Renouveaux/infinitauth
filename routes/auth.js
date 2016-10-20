@@ -19,8 +19,20 @@ auth.use(function(req, res, next) {
 });
 
 auth.get('/', function(req, res){
-  //TODO 
-  //Le client donne son token, nous vérifions si ce dernier est valable ou pas.
+
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    jwt.verify(req.headers.authorization.split(' ')[1], req.app.get('secretPassphrase'), function(err, decoded){
+      res.json(decoded);
+    });
+  }else{
+    res.status(401)
+    .json({
+      status: 401,
+      code: 401,
+      message: "Authentication required.",
+      developerMessage: "Authentication with a valid API Key is required."
+    })
+  }
 })
 
 /*auth.get('/setup', function(req, res) {
