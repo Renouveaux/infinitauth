@@ -3,7 +3,7 @@ image: christianbladescb/aglio
 pages:
   script:
   - mkdir .public
-  - docker run --rm -v $($pwd):/tmp -t christianbladescb/aglio -i /tmp/doc/index.apib -o /tmp/doc/index.html
+  - docker run -v $(pwd):/tmp -t christianbladescb/aglio -i /tmp/doc/input.apib -o /tmp/doc/index.html
   - cp -r doc/index.html .public
   - mv .public public
   artifacts:
