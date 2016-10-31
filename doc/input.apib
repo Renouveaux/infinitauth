@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://api.mywebsite.com/
+HOST: https://api.mywebsite.com
 
 # InfinitAuth
 A REST Auth API Provider
@@ -20,19 +20,12 @@ export MONGO_ADDR=localhost
 ```
 
 
-
-
 # Group Auth
 Authenticate a user and return him token
 
-## Auth [/auth]
+## Authentification [/auth]
 
-### Get auth [GET]
-Return connexion information about the user:
-
-```no-highlight
-https://api.mywebsite.com/auth
-```
+### Return user auth [GET]
 
 + Response 200 (application/json)
 
@@ -61,7 +54,6 @@ https://api.mywebsite.com/auth
             }
 
 ### Authenticate a user [POST]
-Verify existing user, matching password and give him a token
 
 + Request with body (application/json)
 
@@ -72,7 +64,7 @@ Verify existing user, matching password and give him a token
                 "password": "MySup3rCryptedP@ss0rd"
             }
 
-+ Response 201
++ Response 201 (application/json)
 
     + Body 
 
@@ -91,3 +83,130 @@ Verify existing user, matching password and give him a token
                 "message": "Authentication failed. Username and password do not match."
             }
 
+
+# Group Account
+CRUD method for account properties
+
+## CRUD Account [/account/{account_id}]
+
+You may have a valid token for using this path.
+
+
+### Retrieve account information [GET]
+        
+    {
+        Authorization: Bearer JWT
+    }
+
++ Parameters
+    + account_id : f45d6s4qf34dqsfqs6 (required, ObjectId) - ID of the account
+
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "username" : "Awkwas",
+                "firstname" : "Gerda",
+                "lastname" : "Fairbairn",
+                "email" : "GerdaFairbairn@armyspy.com",
+                "createdAt": "2016-10-15T20:14:52.148Z",
+                "modifiedAt": "2016-10-18T22:13:34.518Z",
+                "emailVerified": "true",
+                "loginAttempts": "0"
+            }
++ Response 404 (application/json)
+
+    + Body
+
+            {
+                "message" : "No data found"
+            }
+
++ Response 406 (application/json)
+
+    + Body
+
+            {
+                "message" : "You aren't allowed to access to this resource"
+            }
+
+### Create new account [PUT]
+
+    {
+        "username": "Awkwas",
+        "firstname": "Gerda",
+        "lastname": "Fairbairn",
+        "email": "GerdaFairbairn@armyspy.com",
+        "accounts": {
+            "kind": "internal",
+            "password": "challangepassword"
+        }
+    }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "message" : "Your account was created, a confirmation email was sent"
+            }
+
++ Response 400 (application/json)
+
+    + Body
+
+            {
+                "message" : "an error occured, your request can not be processed"
+            }
+
+### Update account information [PATCH]
+
+    {
+        Authorization: Bearer JWT
+    }
+
++ Parameters
+    + account_id : f45d6s4qf34dqsfqs6 (required, ObjectId) - ID of the account
+
++ Request with body (application/json)
+
+    You can send any key / value to update your account, except username and _id
+
+    + Body
+
+            {
+                "email": "GerdaFairbairn@armyspy.org"
+            }
+
++ Response 204
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "message" : "Your not allowed to delete this resource"
+            }
+
+
+
+### Delete my account [DELETE]
+
+    {
+        Authorization: Bearer JWT
+    }
+
++ Parameters
+    + account_id : f45d6s4qf34dqsfqs6 (required, ObjectId) - ID of the account
+
++ Response 204
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "message" : "Your not allowed to delete this resource"
+            }
