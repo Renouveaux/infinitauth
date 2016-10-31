@@ -5,6 +5,7 @@ const mongoose 	= require('mongoose');
 
 const app = express();
 
+// Get constants
 const SECRET = process.env.secret;
 const MONGO_ADDR = process.env.MONGO_ADDR;
 const MONGO_PORT = process.env.MONGO_PORT;
