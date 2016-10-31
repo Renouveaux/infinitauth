@@ -25,6 +25,34 @@ Authenticate a user and return him token
 
 ## Authentification [/auth]
 
+### Return user auth [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "username" : "Awkwas",
+                "firstname" : "Gerda",
+                "lastname" : "Fairbairn",
+                "email" : "GerdaFairbairn@armyspy.com",
+                "createdAt": "2016-10-15T20:14:52.148Z",
+                "modifiedAt": "2016-10-18T22:13:34.518Z",
+                "emailVerified": "true",
+                "loginAttempts": "0"
+            }
+            
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "status": 401,
+                "code": 401,
+                "message": "Authentication required.",
+                "developerMessage": "Authentication with a valid API Key is required."
+            }
+
 ### Authenticate a user [POST]
 
 + Request with body (application/json)
@@ -101,10 +129,7 @@ You may have a valid token for using this path.
     + Body
 
             {
-                "status": 401,
-                "code": 401,
-                "message": "Authentication required.",
-                "developerMessage": "Authentication with a valid API Key is required."
+                "message" : "You aren't allowed to access to this resource"
             }
 
 ### Create new account [PUT]
@@ -162,7 +187,7 @@ You may have a valid token for using this path.
     + Body
 
             {
-                "message" : "Your not allowed to update this resource"
+                "message" : "Your not allowed to delete this resource"
             }
 
 
