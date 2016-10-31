@@ -18,7 +18,7 @@ auth.use(function(req, res, next) {
   next();
 });
 
-auth.get('/', function(req, res){
+/*auth.get('/', function(req, res){
 
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
     jwt.verify(req.headers.authorization.split(' ')[1], req.app.get('secretPassphrase'), function(err, decoded){
@@ -35,7 +35,7 @@ auth.get('/', function(req, res){
   }
 })
 
-/*auth.get('/setup', function(req, res) {
+auth.get('/setup', function(req, res) {
   User.findOne({ username: 'admin' }, function(err, user) {
     if (err) throw err;
 
