@@ -3,3 +3,6 @@ infinitauth.sublime-project
 infinitauth.sublime-workspace
 yarn.lock
 node_modules
+gh-pages
+.gitlab-ci.yml
+test.js

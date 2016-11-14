@@ -142,4 +142,14 @@ UserSchema.statics.getAuthenticated = function(username, password, cb) {
       }).select('+accounts');
 };
 
+UserSchema.statics.getAccountInformation = function(account_id, cb){
+  this.findById(account_id, function(err, data){
+    if (err) return cb({
+      "message" : "No data found"
+    });
+
+    return cb(null, data);
+  });
+}
+
 module.exports = mongoose.model('User', UserSchema);

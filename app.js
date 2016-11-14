@@ -1,6 +1,7 @@
 'use strict';
 
 const express	= require('express');
+const bodyParser 	= require('body-parser');
 const mongoose 	= require('mongoose');
 
 const app = express();
@@ -12,6 +13,9 @@ const MONGO_PORT = process.env.MONGO_PORT;
 const MONGO_DATABASE = process.env.MONGO_DATABASE;
 
 app.set('secretPassphrase', SECRET);
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 function getConnectionString(){
 	return `mongodb://${MONGO_ADDR}:${MONGO_PORT}/${MONGO_DATABASE}`;
@@ -30,6 +34,8 @@ app.route('/')
 	});
 
 app.use('/auth', require('./routes/auth'));
+
+app.use('/account', require('./routes/account'));
 
 let port = process.env.port || 3000;
 
