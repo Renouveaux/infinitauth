@@ -8,14 +8,14 @@ const LOCK_TIME = 1 * 60 * 1000;
 
 const UserSchema = new Schema({
   __v: {type: Number, select: false},
-  username : { type : String },
+  username : { type : String, required: true },
   firstname : { type : String, required: true },
   lastname : { type : String, required: true },
   email : { type : String, required: true },
   createdAt: { type: Date, default: Date.now },
   modifiedAt: { type: Date },
-  emailVerified: { type: Boolean, default: false, required: true },
-  loginAttempts: { type: Number, default: 0, required: true },
+  emailVerified: { type: Boolean, default: false },
+  loginAttempts: { type: Number, default: 0 },
   lockUntil: { type: Number },
   accounts : { type : Schema.Types.Mixed, select : false, required: true}
 });
