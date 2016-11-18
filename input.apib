@@ -52,7 +52,7 @@ Authenticate a user and return him token
 
             {
                 "success": false,
-                "message": "Authentication failed. Username and password do not match."
+                "message": "Authentication failed. Username and password does not match."
             }
 
 
@@ -74,7 +74,7 @@ You may have a valid token for using this path.
     + account_id : 78f1df1dg8fe6z6f4de (required, ObjectId) - ID of the account
 
 
-+ Response 200 (application/json)
++ Response 206 (application/json)
 
     + Body
 
@@ -134,6 +134,22 @@ You may have a valid token for using this path.
 
             {
                 "message" : "an error occured, your request can not be processed"
+            }
+
++ Response 405 (application/json)
+
+    + Body
+
+            {
+                "message" : "You have to send account data";
+            }
+
++ Response 409 (application/json)
+
+    + Body
+
+            {
+                "message" : "This user account already exist"
             }
 
 ### Update account information [PATCH]
