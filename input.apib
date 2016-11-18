@@ -59,7 +59,7 @@ Authenticate a user and return him token
 # Group Account
 CRUD method for account properties
 
-## CRUD Account [/account/{account_id}]
+## CRUD Account [/account]
 
 You may have a valid token for using this path.
 
@@ -184,10 +184,10 @@ You may have a valid token for using this path.
 
 + Response 204
 
-+ Response 405 (application/json)
++ Response 404 (application/json)
 
     + Body
 
             {
-                "message" : "Your not allowed to delete this resource"
+                "message" : "This resource doesn't exist anymore, please delete your token";
             }
