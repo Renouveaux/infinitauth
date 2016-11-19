@@ -1,6 +1,5 @@
 'use strict';
 
-
 const express		= require('express');
 const bodyParser 	= require('body-parser');
 const mongoose 		= require('mongoose');
@@ -32,12 +31,8 @@ mongoose.connect(connectionString);
 //Routing
 app.route('/')
 	.get(function(req, res){
-		res.json({message: "Hello from infinitAuth"});
+		res.send("Hello from infinitAuth");
 	});
-
-app.use('/auth', require('./routes/auth'));
-
-app.use('/account', require('./routes/account'));
 
 let port = process.env.port || 3000;
 

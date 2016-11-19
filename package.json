@@ -1,21 +1,21 @@
 {
   "name": "infinitauth",
   "version": "0.0.1",
-  "description": "A REST Auth API server",
+  "description": "Tutoriel de création d'API",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/Renouveaux/infinitauth.git"
+    "url": "git+https://github.com/Renouveaux/infinitauth.git"
   },
   "author": "Renouveaux",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/Renouveaux/infinitauth/issues"
+    "url": "https://github.com/Renouveaux/infinitauth/issues"
   },
-  "homepage": "https://gitlab.com/Renouveaux/infinitauth#README",
+  "homepage": "https://github.com/Renouveaux/infinitauth#README",
   "dependencies": {
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
