@@ -46,31 +46,4 @@ auth.post('/', function(req, res){
 
 });
 
-auth.get('/setup', function(req, res) {
-  User.findOne({ username: 'admin' }, function(err, user) {
-    if (err) throw err;
-
-    if (user) {
-      return res.status(409).json({ message: 'user already exists' });
-    }
-
-    const admin = new User({
-      username: 'admin',
-      firstname: 'admin',
-      lastname: 'admin',
-      email: `admin@${process.env.MONGO_ADDR}`,
-      accounts: {
-        kind: 'internal',
-        password: 'changemeplease'
-      }
-    });
-
-    return admin.save(function(saveErr) {
-      if (saveErr) throw saveErr;
-
-      return res.json({ success: true });
-    });
-  });
-});
-
 module.exports = auth;

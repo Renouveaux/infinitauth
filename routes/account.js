@@ -2,17 +2,15 @@
 
 const express 		= require('express');
 const jwt			= require('express-jwt');
+const token			= require('jsonwebtoken');
 
 const User = require('../models/users.js');
 
 const account = express.Router();
 
 account.use(jwt({secret: process.env.secret}).unless(function(req) {
-	return (
-		req.method === 'PUT'
-		);
-})
-);
+	return (req.method === 'PUT');
+}));
 
 account.use(function (err, req, res, next) {
 	if (err.name === 'UnauthorizedError') { 
@@ -25,16 +23,21 @@ account.use(function (err, req, res, next) {
 	}
 });
 
-account.get('/:account_id', function(req, res, next){
+account.get('/', function(req, res, next){
 
-	User.getAccountInformation(req.params.account_id, function(err, data){
+	let constToken = req.headers.authorization.split(' ')[1];
 
-		if(err) {
-			res.status(404).json(err);
-			return next();
-		}
+	token.verify(constToken, process.env.secret, function(err, decoded){
+		if(err) return res.status(400).json({"message" : "The token given can't be verified"});
+		
+		User.getAccountInformation(decoded.username, function(err, data){
 
-		res.json(data);
+			if(err) {
+				return res.status(404).json(err);
+			}
+
+			res.status(206).json(data);
+		});
 	});
 
 });
@@ -52,6 +55,9 @@ account.put('/', function(req, res, next){
 	}
 
 	User.findOne({ username: req.body.username }, function(err, user) {
+		/*
+		Check if a error was returned by MongoDB
+		*/
 		if (err) {
 			res.status(400).json({"message": "an error occured, your request can not be processed"})
 			return false;
@@ -63,13 +69,13 @@ account.put('/', function(req, res, next){
 		}
 
 		const admin = new User({
-			username: req.body.username || null,
-			firstname: req.body.firstname || null,
-			lastname: req.body.lastname || null,
-			email: req.body.email || null,
+			username: req.body.username,
+			firstname: req.body.firstname,
+			lastname: req.body.lastname,
+			email: req.body.email,
 			accounts: {
-				kind: req.body.accounts.kind || null,
-				password: req.body.accounts.password || null
+				kind: req.body.accounts.kind,
+				password: req.body.accounts.password
 			}
 		});
 
@@ -79,55 +85,38 @@ account.put('/', function(req, res, next){
 				return false;
 			};
 
-			return res.json({ "message": "Your account was created" });
+			return res.status(201).json({ "message": "Your account was created" });
 		});
 	});
 
 });
 
-account.patch('/:account_id', function(req, res, next){
+/*account.patch('/', function(req, res, next){
 
 	res.status(405).json({"message": "Your not allowed to update this resource"});
 
 	res.status(204).end();
 
-});
+});*/
 
-account.delete('/:account_id', function(req, res, next){
+account.delete('/', function(req, res, next){
 
-	res.status(405).json({"message": "Your not allowed to delete this resource"});
+	let constToken = req.headers.authorization.split(' ')[1];
 
-	res.status(204).end();
+	token.verify(constToken, process.env.secret, function(err, decoded){
+		if(err) return res.status(400).json({"message" : "The token given can't be verified"});
+		
+		User.findOneAndRemove(decoded.username, function(err, data){
+
+			if(err) {
+				return res.status(404).json({"message" : "This resource doesn't exist anymore, please delete your token"});
+			}
+
+			res.status(204).end();
+		});
+	});
 
 });
 
 
 module.exports = account;
-
-/*auth.get('/setup', function(req, res) {
-  User.findOne({ username: 'admin' }, function(err, user) {
-    if (err) throw err;
-
-    if (user) {
-      return res.status(409).json({ message: 'user already exists' });
-    }
-
-    const admin = new User({
-      username: 'admin',
-      firstname: 'admin',
-      lastname: 'admin',
-      email: `admin@${process.env.MONGO_ADDR}`,
-      accounts: {
-      	kind: 'internal',
-      	password: 'changemeplease'
-      }
-    });
-
-    return admin.save(function(saveErr) {
-      if (saveErr) throw saveErr;
-
-      return res.json({ success: true });
-    });
-  });
-});
-*/
