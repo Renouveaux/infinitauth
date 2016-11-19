@@ -6,6 +6,7 @@ const bodyParser 	= require('body-parser');
 const mongoose 		= require('mongoose');
 
 const app 			= express();
+app.disable('x-powered-by');
 
 // Get constants
 const SECRET = process.env.secret;
