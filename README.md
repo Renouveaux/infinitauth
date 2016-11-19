@@ -20,5 +20,11 @@ Installer MongoDB depuis le site de MongoDB en fonction de votre distribution =>
 Utiliser un container de MongoDB sur docker, c'est ce que j'utilise => https://hub.docker.com/_/mongo/
 Utiliser l'offre gratuite de mongolab pour vos essaies : https://mlab.com/
 
+Et enfin, vous devrez créer des variables d'environnement, soit à la volée, soit en dure dont voici la liste.
+`export secret="4g8f6ds4g63fd1s8ghg74j8uy64k"
+export MONGO_DATABASE=infinitauth
+export MONGO_PORT=27017
+export MONGO_ADDR=192.168.0.254`
+
 Rendez-vous sur ma chaîne pour la présentation des tutos en vidéos.
 https://www.youtube.com/c/Renouveaux_dev
