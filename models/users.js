@@ -81,7 +81,7 @@ var reasons = UserSchema.statics.failedLogin = {
 };
 
 UserSchema.statics.getAuthenticated = function(username, password, cb) {
-  this.findOne({ username: username }, function(err, user) {
+  this.findOne({ username: new RegExp(["^", username, "$"].join(""), "i") }, function(err, user) {
     if (err) return cb(err);
 
         // make sure the user exists
@@ -102,34 +102,32 @@ UserSchema.statics.getAuthenticated = function(username, password, cb) {
         user.comparePassword(password, function(err, isMatch) {
           if (err) return cb(err);
 
+          let userInfo = {
+            username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            createdAt: user.createdAt,
+            emailVerified: user.emailVerified,
+          }
+
             // check if the password was a match
             if (isMatch) {
                 // if there's no lock or failed attempts, just return the user
-                if (!user.loginAttempts && !user.lockUntil) return cb(null, {
-                  username: user.username,
-                  firstname: user.firstname,
-                  lastname: user.lastname,
-                  email: user.email,
-                  createdAt: user.createdAt,
-                  emailVerified: user.emailVerified,
-                  loginAttempts: user.loginAttempts
-                });
+                if (!user.loginAttempts && !user.lockUntil) {
+                  userInfo.loginAttempts = user.loginAttempts;
+                  return cb(null, userInfo);
+                }
+
                 // reset attempts and lock info
-                var updates = {
+                let updates = {
                   $set: { loginAttempts: 0 },
                   $unset: { lockUntil: 1 }
                 };
                 return user.update(updates, function(err) {
                   if (err) return cb(err);
-                  return cb(null, {
-                    username: user.username,
-                    firstname: user.firstname,
-                    lastname: user.lastname,
-                    email: user.email,
-                    createdAt: user.createdAt,
-                    emailVerified: user.emailVerified,
-                    loginAttempts: 0
-                  });
+                  userInfo.loginAttempts = 0;
+                  return cb(null, userInfo);
                 });
               }
 
@@ -142,14 +140,14 @@ UserSchema.statics.getAuthenticated = function(username, password, cb) {
       }).select('+accounts');
 };
 
-UserSchema.statics.getAccountInformation = function(account_id, cb){
-  this.findById(account_id, function(err, data){
+UserSchema.statics.getAccountInformation = function(username, cb){
+  this.findOne({ username : username }, function(err, data){
     if (err) return cb({
       "message" : "No data found"
     });
 
-    return cb(null, data);
-  });
+      return cb(null, data);
+    });
 }
 
 module.exports = mongoose.model('User', UserSchema);
