@@ -141,7 +141,7 @@ UserSchema.statics.getAuthenticated = function(username, password, cb) {
 };
 
 UserSchema.statics.getAccountInformation = function(username, cb){
-  this.findOne({ username : username }, function(err, data){
+  this.findOne({ username : new RegExp(["^", username, "$"].join(""), "i") }, function(err, data){
     if (err) return cb({
       "message" : "No data found"
     });
